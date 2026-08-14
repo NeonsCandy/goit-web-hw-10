@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head><title>{{ author.fullname }}</title></head>
+<body>
+    <h2>{{ author.fullname }}</h2>
+    
+    <p><strong>Дата народження:</strong> {{ author.born_date }}</p>
+    <p><strong>Місце народження:</strong> {{ author.born_location }}</p>
+    
+    <p><strong>Біографія:</strong></p>
+    <div style="border: 1px solid #eee; padding: 15px; background-color: #f9f9f9;">
+        <p>{{ author.description }}</p>
+    </div>
+    
+    <br>
+    <a href="{% url 'index' %}">⬅ Повернутися на головну</a>
+</body>
+</html>

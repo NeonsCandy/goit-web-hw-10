@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head><title>Цитати за тегом: {{ tag.name }}</title></head>
+<body>
+    <h2>Цитати з тегом: {{ tag.name }}</h2>
+    <a href="{% url 'index' %}">⬅ Повернутися на головну</a>
+    <hr>
+    
+    {% for quote in quotes %}
+        <div style="border: 1px solid #ccc; margin: 10px; padding: 10px;">
+            <p>"{{ quote.text }}"</p>
+            <small>Автор: {{ quote.author.fullname }}</small>
+        </div>
+    {% empty %}
+        <p>Для цього тегу поки немає цитат.</p>
+    {% endfor %}
+</body>
+</html>

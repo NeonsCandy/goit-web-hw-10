@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head><title>Додати цитату</title></head>
+<body>
+    <h2>Додати нову цитату</h2>
+    
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        
+        <button type="submit">Зберегти цитату</button>
+    </form>
+    
+    <br><br>
+    <a href="{% url 'index' %}">⬅ Повернутися на головну</a>
+</body>
+</html>

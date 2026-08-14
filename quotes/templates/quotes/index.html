@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head><title>Quotes</title></head>
+<body>
+    <header>
+        {% if user.is_authenticated %}
+            <span>Привіт, {{ user.username }}!</span>
+            <a href="{% url 'add_author' %}">Додати автора</a>
+            <a href="{% url 'add_quote' %}">Додати цитату</a>
+            <a href="{% url 'scrape_data' %}">Спарсити з сайту (Топ-10)</a>
+            <form action="{% url 'logout' %}" method="post" style="display:inline;">
+                {% csrf_token %}<button type="submit">Вийти</button>
+            </form>
+        {% else %}
+            <a href="{% url 'login' %}">Увійти</a>
+            <a href="{% url 'register' %}">Реєстрація</a>
+        {% endif %}
+    </header>
+
+    <main style="display: flex;">
+        <div style="flex: 3;">
+            {% for quote in page_obj %}
+                <div class="quote" style="border: 1px solid #ccc; margin: 10px; padding: 10px;">
+                    <p>{{ quote.text }}</p>
+                    <small>by <a href="{% url 'author_detail' quote.author.id %}">{{ quote.author.fullname }}</a></small>
+                    <div class="tags">
+                        Теги: 
+                        {% for tag in quote.tags.all %}
+                            <a href="{% url 'tag_detail' tag.name %}">{{ tag.name }}</a>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endfor %}
+            <div class="pagination">
+                {% if page_obj.has_previous %}
+                    <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
+                {% endif %}
+                <span>Сторінка {{ page_obj.number }} з {{ page_obj.paginator.num_pages }}</span>
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}">Next</a>
+                {% endif %}
+            </div>
+        </div>
+
+        <div style="flex: 1; padding: 10px;">
+            <h3>Top Ten tags</h3>
+            <ul>
+                {% for tag in top_tags %}
+                    <li><a href="{% url 'tag_detail' tag.name %}">{{ tag.name }} ({{ tag.num_quotes }})</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </main>
+</body>
+</html>
