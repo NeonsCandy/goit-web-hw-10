@@ -11,12 +11,10 @@ from bs4 import BeautifulSoup
 def index(request):
     quotes_list = Quote.objects.all()
     
-    # Пагінація (10 на сторінку)
     paginator = Paginator(quotes_list, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     
-    # Топ 10 тегів
     top_tags = Tag.objects.annotate(num_quotes=Count('quote')).order_by('-num_quotes')[:10]
 
     return render(request, 'quotes/index.html', {'page_obj': page_obj, 'top_tags': top_tags})
@@ -64,7 +62,6 @@ def register(request):
 
 @login_required
 def scrape_data(request):
-    # Додаткове завдання: Скрапінг з сайту у БД Postgres
     url = "http://quotes.toscrape.com/"
     response = requests.get(url)
     soup = BeautifulSoup(response.text, 'html.parser')
@@ -74,7 +71,6 @@ def scrape_data(request):
         author_name = quote_block.find('small', class_='author').text
         tags = [tag.text for tag in quote_block.find_all('a', class_='tag')]
         
-        # Для спрощення зберігаємо тільки ім'я автора (біографію можна додати глибшим парсингом)
         author, _ = Author.objects.get_or_create(fullname=author_name)
         quote, _ = Quote.objects.get_or_create(text=text, author=author)
         
