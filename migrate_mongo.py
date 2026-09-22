@@ -29,7 +29,7 @@ def migrate_data():
 
         if author:
             quote, created = Quote.objects.get_or_create(
-                quote=quote_data.get("quote"),
+                text=quote_data.get("quote"),
                 author=author
             )
             for tag_name in quote_data.get("tags", []):
